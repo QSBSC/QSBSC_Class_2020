@@ -12,8 +12,6 @@ Basic text is sufficient, but you can also format the text with an array of _Mar
 
 And then you can run code within the same document, such as this R code for loading a small test dataset and show what it looks like.  
 
-New line.
-
 #### Load the file
 ```{r}
 d <- read.csv('../../Data/testdat.csv', as.is=TRUE)

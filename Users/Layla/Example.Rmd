@@ -1,8 +1,10 @@
 ---
 title: "Test R markdown file"
-output: 
-    html_notebook:
-        self_contained: yes
+output:
+  html_document:
+    df_print: paged
+  html_notebook:
+    self_contained: yes
 ---
 
 ### Example code
@@ -11,8 +13,6 @@ This is some exmaple text to show how you can annotate your code and provide inf
 Basic text is sufficient, but you can also format the text with an array of _Markdown_ commands.  
 
 And then you can run code within the same document, such as this R code for loading a small test dataset and show what it looks like.  
-
-New line.
 
 #### Load the file
 ```{r}
