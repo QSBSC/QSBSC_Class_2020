@@ -1,0 +1,12 @@
+name: improc2
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - mahotas=1.4.7
+  - opencv=4.1.1
+  - python=3.7.4
+  - scikit-image=0.15.0
+  - pandas
+  - pylab
+  - scipy
