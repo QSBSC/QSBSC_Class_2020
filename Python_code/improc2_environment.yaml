@@ -8,5 +8,4 @@ dependencies:
   - python=3.7.4
   - scikit-image=0.15.0
   - pandas
-  - pylab
   - scipy
