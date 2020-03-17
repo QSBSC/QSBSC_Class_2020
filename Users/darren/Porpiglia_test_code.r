@@ -1,7 +1,7 @@
 library(gplots) # needed for color palette
 
 # load data
-d <- read.csv('/Users/vagan/Desktop/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
 
 # subset day0 only
 d0 <- d[d$sample == "Day0",]
