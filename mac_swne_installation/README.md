@@ -16,11 +16,12 @@ These steps will all be done in Terminal.
 `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
 * Use Homebrew to install the llvm compiler: `brew install llvm`
 
-### Tell R where the new compiler is
-* First make sure you are in your home directory by typing: `cd ~`
-* Make a new (hidden) directory by typing: `mkdir .R`
-* Download the [`Makevar.txt` file](Makevars.txt) and note the location (e.g. `~/Downloads/Makevars.txt`)
-* Move/rename the file into the new hidden folder you made by typing: `mv <path_to_Makevars.txt> ~/.R/Makevars`
+### Let R know the location of the new compilers
+* First make sure you are in your home directory by typing: `cd ~`  
+* Check for presence of hidden `.R` directory by typing: `ls -la`  
+* If not, make a new (hidden) directory by typing: `mkdir .R`
+* Download the file [`Makevar.txt`](https://raw.githubusercontent.com/QSBSC/QSBSC_Class_2020/master/mac_swne_installation/Makevars.txt) (right click and select `Download Linked File As...`) and note the location (e.g. `~/Desktop/Makevars.txt`)
+* Move/rename the file into the new hidden folder you made by typing in *Terminal*: `mv <path_to_Makevars.txt> ~/.R/Makevars`
 
 After that you should be able to install the libraries *in R* using:  
 
