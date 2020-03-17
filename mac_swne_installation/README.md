@@ -26,7 +26,7 @@ These steps will all be done in Terminal.
 After that you should be able to install the libraries *in R* using:  
 
 `if(!require(devtools)){ install.packages("devtools")}`  
-`devtools::install_github("linxihui/NNLM")`  
+`devtools::install_url("https://cran.r-project.org/src/contrib/Archive/NNLM/NNLM_0.4.3.tar.gz", type="source")`  
 `devtools::install_github("yanwu2014/swne")`  
 
 #### Thanks to stackoverflow!
