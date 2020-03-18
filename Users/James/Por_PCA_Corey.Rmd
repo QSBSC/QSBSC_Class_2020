@@ -1,0 +1,41 @@
+```{r}
+# Install/load packages
+install.packages("ggplot2", dependencies = TRUE)
+library(devtools)
+library(ggplot2)
+
+# Set working directory to wherever your QSBSC git repository is
+setwd('C:/Users/james/Documents/git-repos')
+
+# load data
+d <- read.csv('QSBSC_Class_2020/Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+# Reproducing flow cytometry data
+ggplot(data = d, aes(x = asinh(CD104), y = asinh(CD9), color = asinh(IdU), fill = asinh(IdU))) +
+  geom_point(alpha = 0.3) +
+  facet_wrap(~sample, ncol = 3) + 
+  scale_color_gradientn(colors = rev(rainbow(4))) +
+  scale_fill_gradientn(colors = rev(rainbow(4)))
+
+ggplot(data = d, aes(x = asinh(CD104), y = asinh(CD9), color = asinh(MyoD), fill = asinh(MyoD))) +
+  geom_point(alpha = 0.3) +
+  facet_wrap(~sample, ncol = 3) + 
+  scale_color_gradientn(colors = rev(rainbow(4))) +
+  scale_fill_gradientn(colors = rev(rainbow(4)))
+
+# Novel PCA analysis
+# Used only some members of the data (not sample, rep, time, viability - rest 
+## seem to be molecular features)
+d_pca <- d[,c(3:22,25)]
+
+# Run PCA analysis
+pca <- prcomp(d_pca, center = T, scale. = T)
+
+# Use package to plot pca'd data
+ggplot(as.data.frame(pca$x), aes(x = PC1, y = PC2)) +
+  
+  geom_point(alpha = 0.05)
+
+
+```
+

@@ -1,0 +1,76 @@
+---
+title: "Principal Component Analysis of Poriglia Dataset"
+output: html_notebook
+---
+---
+```{r include=FALSE}
+install.packages("ggplot2", dependencies = TRUE)
+library(factoextra)
+library(ggplot2)
+library(gplots)
+```
+
+
+```{r include=FALSE}
+PorpigliaSET <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv')
+
+#d0 PCA
+d0PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day0",]
+
+d0Por.PCA <- prcomp(d0PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+
+#d3 PCA
+d3PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day3",]
+
+d3Por.PCA <- prcomp(d3PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+
+#d6 PCA
+d6PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day6",]
+
+d6Por.PCA <- prcomp(d6PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+```
+
+
+Explained Variances 
+```{r Explained Variances, echo=FALSE}
+
+par(mar=c(0,0,0,0), oma=c(3,3,3,3), mfrow=c(4, 3))
+
+plot(fviz_eig(d0Por.PCA, title = "d0", addlabels = TRUE))
+plot(fviz_eig(d3Por.PCA, title = "d3", addlabels = TRUE))
+plot(fviz_eig(d6Por.PCA, title = "d6", addlabels = TRUE))
+```
+Fig1a-c: Indicates the percentage of variances explained by each principal component for day 0,3,6. 
+
+
+
+
+
+Variables PCA: Related factors trend in the same direction 
+```{r Variable PCA, echo=FALSE}
+plot(fviz_pca_var(d0Por.PCA, title = "d0", repel = TRUE))
+plot(fviz_pca_var(d3Por.PCA, title = "d3", repel = TRUE))
+plot(fviz_pca_var(d6Por.PCA, title = "d6", repel = TRUE))
+```
+
+Fig1d-f: Positive correlated variables point to the same side of the plot. Negative correlated variables point to opposite sides of the graph.
+
+
+
+```{r Explained Variances, echo=FALSE}
+
+pdf(file="../../Data/Porpiglia/Fig1_a-c", height=3, width=8)
+
+par(mar=c(0,0,0,0), oma=c(3,3,3,3), mfrow=c(1, 3))
+
+plot(fviz_eig(d0Por.PCA, title = "d0"))
+
+plot(fviz_eig(d3Por.PCA, title = "d3"))
+
+plot(fviz_eig(d6Por.PCA, title = "d6"))
+
+dev.off()
+
+```
+```
+
