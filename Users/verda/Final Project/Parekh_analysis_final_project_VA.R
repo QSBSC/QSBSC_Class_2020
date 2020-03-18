@@ -34,7 +34,7 @@ dev.off()
 
 ------------------------------------------------------------------------------------------------------------------------
 #########################PART 2#########################
-Here, I have regenerated the tSNE projection from the screen in pluripotent stem cell medium as a PCA (linear dimensionality reduction)
+Here, I have regenerated the tSNE projection for hESCs across media conditions as a PCA (linear dimensionality reduction)
 and UMAP (nonlinear dimensionality reduction). You will see these plots at the bottom of the script in Step 7.
 This code was pulled from https://github.com/yanwu2014/SEUSS-Analysis and specifically copied from `hESC_summarize_results.R`.
 #########################PART 2#########################
