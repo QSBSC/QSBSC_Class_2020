@@ -1,0 +1,58 @@
+---
+title: "JW_Final_PorpigliaData_PCA_Notebook"
+output: html_notebook
+---
+
+Load Library 
+```{r echo=TRUE}
+install.packages("ggplot2", dependencies = TRUE)
+library(factoextra)
+library(ggplot2)
+library(gplots)
+```
+
+Read Data Set into R and generate PCA anaysis for each Day
+```{r echo=TRUE}
+PorpigliaSET <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv')
+
+#d0 PCA
+d0PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day0",]
+
+d0Por.PCA <- prcomp(d0PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+
+#d3 PCA
+d3PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day3",]
+
+d3Por.PCA <- prcomp(d3PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+
+#d6 PCA
+d6PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day6",]
+
+d6Por.PCA <- prcomp(d6PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+```
+
+
+Plot the % Variances for each Day
+```{r Explained Variances, echo=FALSE}
+par(mar=c(0,0,0,0), oma=c(3,3,3,3), mfrow=c(4, 3))
+
+plot(fviz_eig(d0Por.PCA, title = "Fig1A_d0"))
+plot(fviz_eig(d3Por.PCA, title = "Fig1B_d3"))
+plot(fviz_eig(d6Por.PCA, title = "Fig1C_d6"))
+```
+
+Plot the PCA by the two primary dimensions for each day. 
+```{r}
+par(mar=c(0,0,2,0), oma=c(5,5,5,5), mfrow=c(1, 3))
+plot(d0Por.PCA$x[,1:2], main = "d0", frame.plot = "TRUE", ylab = "Dim1", xlab = "Dim2")
+plot(d3Por.PCA$x[,1:2], frame.plot = "TRUE", main = "d3", xlab = "Dim2")
+plot(d6Por.PCA$x[,1:2], frame.plot = "TRUE", main = "d6", xlab = "Dim2")
+
+mtext("DIM_1", side=2, line=3, adj=0.5, cex=1, col="Black", outer=TRUE)
+mtext("D", side=3, line=3, adj=0.0, cex=1, col="Black", outer=TRUE)
+mtext("DIM_2", side=1, line=3, adj=0.15, cex=1, col="Black", outer=TRUE)
+mtext("DIM_2", side=1, line=3, adj=0.5, cex=1, col="Black", outer=TRUE)
+mtext("DIM_2", side=1, line=3, adj=0.85, cex=1, col="Black", outer=TRUE)
+```
+Fig1: Principal component analysis (PCA) of Myogenic Lineage following wounding. A-C, Describes % varbility witin the sample (d0,d3,d6) defined by each Pricipal component. D, Panels revel transiently altered PCA elements follwoing muscle lineage wouding.  
+

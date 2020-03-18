@@ -1,0 +1,5 @@
+CC=/usr/local/opt/llvm/bin/clang
+CXX=/usr/local/opt/llvm/bin/clang++
+# Also potentially CXX11 (for C++11 compiler)
+CXX11=/usr/local/opt/llvm/bin/clang++
+FLIBS=`gfortran -print-search-dirs | grep '^libraries:' | sed 's|libraries: =||' | sed 's|:| -L|g' | sed 's|^|-L|'`

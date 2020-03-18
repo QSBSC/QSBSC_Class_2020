@@ -1,0 +1,165 @@
+---
+title: "James White recreation of Porpiglia_2017 Fig4"
+output: html_notebook
+---
+
+Using IdU
+
+
+Plot Day0 CD104_CD9 Values By IdU
+```{r echo=FALSE}
+
+
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+IdU_d0 <- d[d$sample == "Day0",]
+
+mycol <- gplots::bluered(100)
+
+plot(asinh(IdU_d0$CD104), asinh(IdU_d0$CD9), 
+     col=mycol[100*IdU_d0$IdU/max(d$IdU)], pch=19, main='Day 0', ylab = "CD9 --->", xlab = "CD104 --->")
+
+
+```
+
+
+Plot Day3 CD104_CD9 Values By IdU
+```{r echo=FALSE}
+
+
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+IdU_d3 <- d[d$sample == "Day3",]
+
+mycol <- gplots::bluered(100)
+
+plot(asinh(IdU_d3$CD104), asinh(IdU_d3$CD9), 
+     col=mycol[100*IdU_d3$IdU/max(d$IdU)], pch=19)
+```
+
+
+Plot Day6 CD104_CD9 Values By IdU
+```{r echo=FALSE}
+
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+IdU_d6 <- d[d$sample == "Day6",]
+
+mycol <- gplots::bluered(100)
+
+plot(asinh(IdU_d6$CD104), asinh(IdU_d6$CD9), 
+     col=mycol[100*IdU_d6$IdU/max(d$IdU)], pch=19)
+```
+
+
+
+
+Using MyoD
+
+
+
+
+Plot Day0 CD104_CD9 Values By MyoD
+```{r echo=FALSE}
+
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+MyoD_d0 <- d[d$sample == "Day0",]
+
+mycol <- gplots::bluered(100)
+
+plot(asinh(MyoD_d0$CD104), asinh(MyoD_d0$CD9), 
+     col=mycol[100*MyoD_d0$MyoD/max(d$MyoD)], pch=19)
+```
+
+Plot Day3 CD104_CD9 Values By MyoD
+```{r echo=FALSE}
+
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+MyoD_d3 <- d[d$sample == "Day3",]
+
+mycol <- gplots::bluered(100)
+
+plot(asinh(MyoD_d3$CD104), asinh(MyoD_d3$CD9), 
+     col=mycol[100*MyoD_d3$MyoD/max(d$MyoD)], pch=19)
+```
+
+
+Plot Day6 CD104_CD9 Values By MyoD
+```{r echo=FALSE}
+
+d <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv', as.is=TRUE)
+
+MyoD_d6 <- d[d$sample == "Day6",]
+
+mycol <- gplots::bluered(100)
+
+plot(asinh(MyoD_d6$CD104), asinh(MyoD_d6$CD9), 
+     col=mycol[100*MyoD_d6$MyoD/max(d$MyoD)], pch=19)
+```
+
+Merged Figure 4b
+```{r Merged Figure, echo=FALSE}
+#IdU
+
+par(mar=c(0,0,0,0), oma=c(3,3,3,3), mfrow=c(2, 3))
+
+plot(asinh(IdU_d0$CD104), asinh(IdU_d0$CD9),
+     col=mycol[100*IdU_d0$IdU/max(d$IdU)], pch=19, axes ="FALSE", frame.plot = "TRUE", ylab = "CD9--->")
+
+plot(asinh(IdU_d3$CD104), asinh(IdU_d3$CD9), 
+     col=mycol[100*IdU_d3$IdU/max(d$IdU)], pch=19, axes ="FALSE", frame.plot = "TRUE")
+
+plot(asinh(IdU_d6$CD104), asinh(IdU_d6$CD9), 
+     col=mycol[100*IdU_d6$IdU/max(d$IdU)], pch=19, axes ="FALSE", frame.plot = "TRUE")
+
+#MyoD
+
+plot(asinh(MyoD_d0$CD104), asinh(MyoD_d0$CD9), 
+     col=mycol[100*MyoD_d0$MyoD/max(d$MyoD)], pch=19, axes ="FALSE", frame.plot = "TRUE")
+
+plot(asinh(MyoD_d3$CD104), asinh(MyoD_d3$CD9), 
+     col=mycol[100*MyoD_d3$MyoD/max(d$MyoD)], pch=19, axes ="FALSE", frame.plot = "TRUE")
+
+plot(asinh(MyoD_d6$CD104), asinh(MyoD_d6$CD9), 
+     col=mycol[100*MyoD_d6$MyoD/max(d$MyoD)], pch=19, axes ="FALSE", frame.plot = "TRUE")
+
+mtext("CD104 --->", side=1, line=1, adj=0.0, cex=1, col="Black", outer=TRUE)
+
+mtext("CD9 --->", side=2, line=1, adj=0.0, cex=1, col="Black", outer=TRUE)
+
+mtext("IDU", side=4, line=1, adj=0.75, cex=1, col="Black", outer=TRUE)
+
+mtext("MyoD", side=4, line=1, adj=0.20, cex=1, col="Black", outer=TRUE)
+
+mtext("Day 0", side=3, line=1, adj=0.14, cex=1, col="Black", outer=TRUE)
+
+mtext("Day 3", side=3, line=1, adj=0.50, cex=1, col="Black", outer=TRUE)
+
+mtext("Day 6", side=3, line=1, adj=0.87, cex=1, col="Black", outer=TRUE)
+```
+
+Load Library 
+```{r}
+library(factoextra)
+```
+
+
+```{r}
+PorpigliaSET <- read.csv('../../Data/Porpiglia/FR-FCM-ZY3K_gated.csv')
+
+d0PorpigliaSet <- PorpigliaSET[PorpigliaSET$sample == "Day0",]
+
+d0Por.PCA <- prcomp(d0PorpigliaSet[,(4:25)], center = TRUE,scale. = TRUE)
+prcomp(d[,-1])
+
+fviz_eig(d0Por.PCA)
+
+fviz_pca_biplot(d0Por.PCA)
+
+```
+
+
+
+
