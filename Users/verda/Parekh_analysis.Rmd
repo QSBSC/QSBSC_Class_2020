@@ -61,6 +61,7 @@ library(RColorBrewer)
 library(Seurat)
 library(grid)
 library(gtable)
+library(umap)
 
 ```
  
@@ -69,7 +70,7 @@ Define file locations and load data. Example below includes path information for
 
 ```{r}
 ## Name of the sample to be analyzed
-file.handle <- "~/Downloads/Parekh_paper_data/up-tf-stem"
+file.handle <- "/Users/vagan/Downloads/Parekh_paper_data/up-tf-stem"
 #file.handle <- "up-tf-stem"
 # file.handle <- "up-tf-endo"
 # file.handle <- "up-tf-multi"
@@ -225,3 +226,59 @@ PlotDims(tsne.emb, sample.groups = tf.groups, pt.size = 0.35, alpha.plot = 0.4, 
 #dev.off()
 ```
 
+## Using UMAP visualization in the Seurat package 
+r <- RunUMAP(r, reduction = "pca", dims = 1:10)
+
+## This is swne on the UMAP embeddings, which captures both the local and global dataset structure 
+## Embeddings -- Dimensional Reduction Cell Embeddings Accessor Function
+umap.emb <- Embeddings(r, reduction = "umap")
+PlotDims(umap.emb, sample.groups = clusters, pt.size = 0.75, alpha.plot = 0.5, label.size = 6, do.label = T, show.legend = F, seed = plot.seed) 
+
+## These are the 3 types of dimensionality reduction we learned: UMAP, t-SNE, and PCA 
+## Both UMAP and t-SNE identify high dimensional struture (i.e., nonlinear dimensionality reduction), visualizing cell clusters, although distances are generally not interpretable
+## PCA identifies structure through linear transformation and shows clusters of samples based on their similarity); distances are interpretable (i.e., linear dimensionality reduction ) 
+DimPlot(r, reduction = "umap")
+DimPlot(r, reduction = "tsne")
+DimPlot(r, reduction = "pca")
+
+--------------------------------------------------------------------------------------------------------------------------
+## Load all libraries
+library(FlowSOM)
+library(flowCore)
+library(Biobase)
+library(ggplot2)
+library(hexbin)
+library(viridis)
+library(ggExtra)
+library(RColorBrewer)
+library(MEM)
+library(tidyverse)
+library(Rtsne)
+library(uwot)
+
+```{r run_UMAP}
+
+# Time ~1 min
+set.seed(OVERALL_SEED)
+# Run UMAP on all scaled surface markers
+
+# the line below will run UMAP on the data set (to see help page for UMAP, type 
+# "?UMAP -- enter" in console)
+
+# you can view UMAP progress by opening up the console below
+myumap <-
+  umap(transformed.chosen.markers,  # input scaled data
+       
+       n_neighbors = 15,            # number of nearest neighbors to look at, 
+                                    # scales with data set
+       
+       n_threads = 1,               # this makes UMAP reproducible
+       verbose = TRUE)
+umap.data = as.data.frame(myumap)
+
+cat("\n\n...'run_UMAP' finished running")
+
+```
+
+### Step 7 
+Generate UMAP plots 
