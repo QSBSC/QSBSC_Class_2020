@@ -19,8 +19,8 @@ These steps will all be done in Terminal.
 ### Let R know the location of the new compilers
 * First make sure you are in your home directory by typing: `cd ~`  
 * Check for presence of hidden `.R` directory by typing: `ls -la`  
-* If not, make a new (hidden) directory by typing: `mkdir .R`
-* Download the file [`Makevar.txt`](https://raw.githubusercontent.com/QSBSC/QSBSC_Class_2020/master/mac_swne_installation/Makevars.txt) (right click and select `Download Linked File As...`) and note the location (e.g. `~/Desktop/Makevars.txt`)
+* If you don't see an entry for `.R/`, make a new (hidden) directory by typing: `mkdir .R`
+* Download the file [`Makevars.txt`](https://raw.githubusercontent.com/QSBSC/QSBSC_Class_2020/master/mac_swne_installation/Makevars.txt) (right click and select `Download Linked File As...`) and note the location (e.g. `~/Desktop/Makevars.txt`)
 * Move/rename the file into the new hidden folder you made by typing in *Terminal*: `mv <path_to_Makevars.txt> ~/.R/Makevars`
 
 After that you should be able to install the libraries *in R* using:  
@@ -30,4 +30,4 @@ After that you should be able to install the libraries *in R* using:
 `devtools::install_github("yanwu2014/swne")`  
 
 #### Thanks to stackoverflow!
-The information on how to do this was obtained from the response to a [question on stackoverflow]  (https://stackoverflow.com/questions/43595457/alternate-compiler-for-installing-r-packages-clang-error-unsupported-option)
+The information on how to do this was obtained from the response to a [question on stackoverflow](https://stackoverflow.com/questions/43595457/alternate-compiler-for-installing-r-packages-clang-error-unsupported-option)
