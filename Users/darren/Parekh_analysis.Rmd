@@ -16,19 +16,33 @@ The data for cells cultured in the pluripotent stem cell medium has been put int
 The following packages must be installed prior to running (many needed only to load `swne` package. Uncomment to execute.
 
 ```{r, results=FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install(version = "3.10")
+getPackageIfNeeded <- function(pkg) {
+  if (!require(pkg, character.only=TRUE, quietly =TRUE))
+    install.packages(pkgs=pkg, dependencies=TRUE)
+}
+getBiocPackageIfNeeded <- function(pkg, vers = NULL) {
+  if (!require(pkg, character.only=TRUE, quietly =TRUE))
+    BiocManager::install(pkgs=pkg, version=vers)
+}
 
-BiocManager::install("TxDb.Hsapiens.UCSC.hg38.knownGene", version = "3.10")
-BiocManager::install("org.Hs.eg.db")
-BiocManager::install("GO.db")
-devtools::install_github("aertslab/RcisTarget")
-devtools::install_github("aertslab/cisTopic")
-devtools::install_version('Seurat', version = "2.3.4")
-devtools::install_github("yanwu2014/swne")
-BiocManager::install("qvalue", version = "3.10", update = FALSE, ask = FALSE)
-devtools::install_github("yanwu2014/perturbLM", upgrade = "never")
+bcpkgs <- list(list(pkg="BiocManager",vers="3.10"),
+               list(pkg="TxDb.Hsapiens.UCSC.hg38.knownGene",vers="3.10"),
+               list(pkg="org.Hs.eg.db"),
+               list(pkg="GO.db"),
+               list(pkg="qvalue", vers="3.10")
+               )
+
+invisible(lapply(bcpkgs, function(x) 
+    do.call(getBiocPackageIfNeeded, args=x)))
+
+pkgs	<-	c("devtools","uwot","umap","Seurat")
+invisible(sapply(pkgs,getPackageIfNeeded))
+if (!require("NNLM")) 
+  devtools::install_version("NNLM", version = "0.4.3")
+if (!require("swne")) 
+  devtools::install_github("yanwu2014/swne")
+if (!require("perturbLM")) 
+  devtools::install_github("yanwu2014/perturbLM", upgrade = "never")
 ```
 
 #### Summary of steps to be run
@@ -55,7 +69,7 @@ Define file locations and load data. Example below includes path information for
 
 ```{r}
 ## Name of the sample to be analyzed
-file.handle <- "Parekh_paper_data/up-tf-stem"
+file.handle <- "~/Downloads/Parekh_paper_data/up-tf-stem"
 #file.handle <- "up-tf-stem"
 # file.handle <- "up-tf-endo"
 # file.handle <- "up-tf-multi"
@@ -71,9 +85,14 @@ print(sort(table(top.coefs.df$Group), decreasing = T))
 
 ## Load clustering
 r <- readRDS(paste(file.handle, "clustering.Robj", sep = "_"))
+
+
 clusters <- r@ident; names(clusters) <- r@cell.names;
 levels(clusters) <- paste("C", levels(clusters), sep = "")
 clusters.list <- UnflattenGroups(clusters)
+
+# update v2 Seurat object to v3
+r <- UpdateSeuratObject(r)
 
 ## Load genotypes
 # genotypes.list <- ReadGenotypes("up-tf-klf-myc_pheno_dict.csv")
@@ -165,7 +184,7 @@ Generate tSNE plots
 ```{r}
 ## tSNE plots (Figure 1c-e)
 plot.seed <- 32907098
-tsne.emb <- GetCellEmbeddings(r, reduction.type = "tsne")
+tsne.emb <- Embeddings(object = r, reduction = "tsne")
 
 #pdf(paste(file.handle, "tsne_plot.pdf", sep = "_"), width = 4, height = 4)
 PlotDims(tsne.emb, sample.groups = clusters, pt.size = 0.75, alpha.plot = 0.5, label.size = 6, do.label = T,
@@ -178,15 +197,20 @@ PlotDims(tsne.emb, sample.groups = clusters, pt.size = 0.75, alpha.plot = 0.5, l
 #dev.off()
 
 #pdf(paste(file.handle, "tsne_plot_batch.pdf", sep = "_"), width = 4, height = 4)
-batch <- factor(r@meta.data$batch); names(batch) <- r@cell.names; batch <- batch[rownames(tsne.emb)];
+batch <- factor(r@meta.data$batch)
+# names(batch) <- r@cell.names
+names(batch) <- colnames(r)
+
+batch <- batch[rownames(tsne.emb)]
+
 PlotDims(tsne.emb, sample.groups = batch, pt.size = 1, alpha.plot = 0.5, label.size = 8, do.label = T,
          show.legend = F, seed = plot.seed)
 #dev.off()
 
 
 ## tSNE plot overlay
-plot.seed <- 32907098
-tsne.emb <- GetCellEmbeddings(r, reduction.type = "tsne")
+# plot.seed <- 32907098
+# tsne.emb <- Embeddings(object = r, reduction = "tsne")
 
 TF <- "NEUROD1"
 
