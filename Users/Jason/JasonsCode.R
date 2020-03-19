@@ -1,5 +1,13 @@
+---
 ## Jason Code
-
+output:
+  pdf_document:
+  latex_engine: xelatex
+html_document:
+  df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
 library(FlowSOM)
 library(flowCore)
 library(ggplot2)
@@ -9,7 +17,9 @@ library(gplots)
 library(grid)
 library(gridExtra)
 library(ggridges)
-library("ggpubr")
+library(ggpubr)
+library(umap)
+
 #file <- "EP2012-07-11-WT-8 weeks_4.fcs"
 #flowO <- flowCore::read.FCS(file,transformation=FALSE)
 #file <- "EP20150815-InjuryTimeCourse-Day6_3.fcs"
@@ -40,7 +50,7 @@ Myf5 <- data[,24]
 MyoD <- data[,7]
 Myogenin <- data[,11]
 
-scale <- "lnear"
+scale <- "log"
 if(scale=="linear")
 {
   CD9 <- CD9
@@ -62,32 +72,43 @@ if (scale=="asinh")
 if (scale=="log")
 {
   CD9 <- log10(CD9+1)
-  CD10 <- log10(CD10+1)
+  CD104 <- log10(CD104+1)
   Pax7 <- log10(Pax7+1)
   Myf5 <- log10(Myf5+1)
   MyoD <- log10(MyoD+1)
-  Myogenin <- log10(Myogenin)
+  Myogenin <- log10(Myogenin+1)
 }
 
 mycol <- colorpanel(100,"blue","yellow","red")
 
-set.seed(43)
-# Run UMAP on all scaled surface markers
-data2 <- data[,listElse]
-myumap <-umap(data2,n_neighbors = 15,n_threads = 1, verbose = TRUE)
-umap.data = as.data.frame(myumap)
+
 
 plot.new()
 frame()
-p1 <- qplot(CD104,CD9, col = Pax7)
-p2 <- qplot(CD104,CD9, col = Myf5)
-p3 <- qplot(CD104,CD9, col = MyoD)
-p4 <- qplot(CD104,CD9, col = Myogenin)
-grid.arrange(p1, p2, p3, p4, nrow = 1)
 
+getCol <- function(var)
+{
+  i <- ifelse(100*var/max(var) > 100, 100, round(100*var/max(var),1))
+  col[i] 
+}
+var <- Pax7
+Pax7C <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+var <- Myf5
+Myf5C <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+var <- MyoD
+MyoDC <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+var <- Myogenin
+MyogeninC <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+
+par(mfrow = c(1, 4))
+plot(CD104,CD9, main = "Pax7",col = Pax7C)
+plot(CD104,CD9, main = "Myf5",col = Myf5C)
+plot(CD104,CD9, main = "MyoD",col = MyoDC)
+plot(CD104,CD9, main = "Myogenin",col = MyogeninC)
 
 set.seed(43)
 # Run UMAP on all scaled surface markers
+
 data2 <- data[,listElse]
 if(scale=="linear")
 {
@@ -102,14 +123,24 @@ if (scale=="log")
   data2 <- log10(data2+1)
 }
 myumap <-umap(data2,n_neighbors = 15,n_threads = 1, verbose = TRUE)
+attributes
 umap.data = as.data.frame(myumap)
 
 plot.new()
 frame()
-p1 <- plot(umap.data[,1],umap.data[,2], col = Pax7)
-p2 <- plot(umap.data[,1],umap.data[,2], col = Myf5)
-p3 <- plot(umap.data[,1],umap.data[,2], col = MyoD)
-p4 <- plot(umap.data[,1],umap.data[,2], col = Myogenin)
+var <- Pax7
+Pax7C <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+var <- Myf5
+Myf5C <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+var <- MyoD
+MyoDC <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+var <- Myogenic
+MyogenicC <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
+par(mfrow = c(1, 4))
+plot(umap.data[,1],umap.data[,2], col = Pax7C)
+plot(umap.data[,1],umap.data[,2], col = Myf5C)
+plot(umap.data[,1],umap.data[,2], col = MyoDC)
+plot(umap.data[,1],umap.data[,2], col = MyogeninC)
 
-grid.arrange(p1, p2, p3, p4,labels = c("Pax7", "Myf5", "MyoD","Myogenin"),nrow = 1)
-  
+legend(1, 95, legend=c("UMAP Pax7", "UMAP Myf5","UMAP MyoD", "UMAP Myogenin"),
+       col=c("red", "blue","orange","green"), lty=1:2, cex=0.8)
