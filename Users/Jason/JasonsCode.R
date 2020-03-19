@@ -1,5 +1,4 @@
 ---
-## Jason Code
 output:
   pdf_document:
   latex_engine: xelatex
@@ -21,9 +20,6 @@ library(ggpubr)
 library(umap)
 
 #file <- "EP2012-07-11-WT-8 weeks_4.fcs"
-#flowO <- flowCore::read.FCS(file,transformation=FALSE)
-#file <- "EP20150815-InjuryTimeCourse-Day6_3.fcs"
-file <- "EP20150513-InjuryTimeCourse-Day6_1.fcs"
 file <- "EP20150513-InjuryTimeCourse-Day6_1.fcs"
 flowO <- flowCore::read.FCS(file,transformation=FALSE)
 data <- flowO@exprs
@@ -124,7 +120,7 @@ if (scale=="log")
 }
 myumap <-umap(data2,n_neighbors = 15,n_threads = 1, verbose = TRUE)
 attributes
-umap.data = as.data.frame(myumap)
+UMAP <- myumap[["layout"]]
 
 plot.new()
 frame()
@@ -137,10 +133,10 @@ MyoDC <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var)
 var <- Myogenic
 MyogenicC <-mycol[ifelse(100*(var+1)/max(var) > 100, 100, round(100*(var+1)/max(var),1))]
 par(mfrow = c(1, 4))
-plot(umap.data[,1],umap.data[,2], col = Pax7C)
-plot(umap.data[,1],umap.data[,2], col = Myf5C)
-plot(umap.data[,1],umap.data[,2], col = MyoDC)
-plot(umap.data[,1],umap.data[,2], col = MyogeninC)
+plot(UMAP[,1],UMAP[,2], main = "Pax7", col = Pax7C)
+plot(UMAP[,1],UMAP[,2],  main = "Myf5", col = Myf5C)
+plot(UMAP[,1],UMAP[,2], main = "Myo", col = MyoDC)
+plot(UMAP[,1],UMAP[,2],  main = "Myogenin", col = MyogeninC)
 
 legend(1, 95, legend=c("UMAP Pax7", "UMAP Myf5","UMAP MyoD", "UMAP Myogenin"),
        col=c("red", "blue","orange","green"), lty=1:2, cex=0.8)
